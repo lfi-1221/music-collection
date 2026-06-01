@@ -346,23 +346,117 @@ select {
   background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px !important;
 }
 
+/* ── FAB (mobile add button) ── */
+.fab {
+  display: none;
+  position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 90;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--ink); color: var(--paper);
+  border: none; cursor: pointer; font-size: 24px;
+  align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  transition: transform 0.15s, opacity 0.15s;
+}
+.fab:active { transform: scale(0.93); }
+
+/* ── BOTTOM NAV (mobile) ── */
+.bottomnav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 80;
+  background: var(--white); border-top: 1px solid var(--ink-08);
+  height: 60px; padding-bottom: env(safe-area-inset-bottom);
+}
+.bottomnav-inner { display: flex; height: 100%; }
+.bn-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; cursor: pointer; color: var(--ink-60);
+  font-size: 10px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
+  transition: color 0.12s; border: none; background: none; font-family: var(--sans);
+  -webkit-tap-highlight-color: transparent;
+}
+.bn-item i { font-size: 20px; }
+.bn-item.on { color: var(--ink); }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   .auth-left { display: none; }
   .auth-right { width: 100%; }
   .rail { width: 180px; }
   .ie-grid { grid-template-columns: 1fr; }
-}
-@media (max-width: 520px) {
-  .rail { width: 52px; }
-  .rail-label, .rail-item span:not(.rail-ct), .rail-ct { display: none; }
-  .rail-item { justify-content: center; padding: 10px; }
-  .page-hero { padding: 1.5rem 1rem 1rem; }
+  .page-hero { padding: 1.25rem 1rem 1rem; }
+  .page-hero-title { font-size: 28px; }
   .content-area { padding: 1.25rem 1rem; }
-  .toolbar { padding: 1rem; }
+  .toolbar { padding: 0.75rem 1rem; gap: 8px; }
+  .stats { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+  .stat { min-width: 90px; padding: 1rem; }
+  .stat-n { font-size: 26px; }
+  .user-wrap { padding: 1.25rem 1rem; }
+  .ie-wrap { padding: 1.25rem 1rem; }
+}
+
+@media (max-width: 600px) {
+  /* Hide sidebar, show bottom nav + FAB */
+  .rail { display: none; }
+  .fab { display: flex; }
+  .bottomnav { display: block; }
+
+  /* Push content above bottom nav */
+  .page { padding-bottom: 68px; }
+
+  /* Hide the inline Add item button in hero — FAB replaces it */
+  .hero-add-btn { display: none; }
+
+  /* Tighter page hero */
+  .page-hero { padding: 1rem 1rem 0.75rem; }
+  .page-hero-row { margin-bottom: 1rem; gap: 8px; }
+  .page-hero-title { font-size: 24px; }
+
+  /* Toolbar */
+  .toolbar { padding: 0.75rem 1rem; }
+  .vtoggle { display: none; }
+
+  /* Grid: 2 columns on mobile */
+  .rec-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .content-area { padding: 1rem; }
+
+  /* List view: simplify columns */
+  .rec-row-head { grid-template-columns: 44px 1fr 60px 36px; }
+  .rec-row { grid-template-columns: 44px 1fr 60px 36px; }
+  .rec-row > *:nth-child(4),
+  .rec-row > *:nth-child(5),
+  .rec-row > *:nth-child(7) { display: none; }
+  .rec-row-head span:nth-child(4),
+  .rec-row-head span:nth-child(5),
+  .rec-row-head span:nth-child(7) { display: none; }
+  .rec-thumb { width: 44px; height: 44px; }
+  .row-actions { opacity: 1; }
+
+  /* Modal full-screen on mobile */
+  .overlay { align-items: flex-end; padding: 0; }
+  .modal {
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    max-height: 92vh; padding: 1.5rem 1.25rem;
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  }
   .form-row { grid-template-columns: 1fr; }
-  .stats { flex-wrap: wrap; }
-  .stat { min-width: 80px; }
+
+  /* Detail view */
+  .detail-wrap { padding: 1rem 1rem 5rem; }
+  .detail-cover { width: 120px; height: 120px; }
+  .detail-title { font-size: 24px; }
+  .detail-hero { gap: 1.25rem; }
+
+  /* Auth */
+  .auth-right { padding: 2rem 1.5rem; }
+
+  /* Users table: hide less important columns */
+  td:nth-child(3), th:nth-child(3),
+  td:nth-child(4), th:nth-child(4) { display: none; }
+
+  /* IE */
+  .ie-wrap { padding: 1rem; }
+  .ie-grid { grid-template-columns: 1fr; }
+  .topbar-user { display: none; }
 }
 </style>
 </head>
@@ -412,7 +506,7 @@ select {
     <aside class="rail">
       <div class="rail-section">
         <p class="rail-label">Collection</p>
-        <div class="rail-item on" onclick="goView('col')" id="rn-col"><i class="ti ti-music" aria-hidden="true"></i> <span>All records</span> <span class="rail-ct" id="rc-all"></span></div>
+        <div class="rail-item on" onclick="goView('col')" id="rn-col"><i class="ti ti-music" aria-hidden="true"></i> <span>All items</span> <span class="rail-ct" id="rc-all"></span></div>
         <div class="rail-item" onclick="goFmt('12-inch')" id="rn-12"><i class="ti ti-circle" aria-hidden="true"></i> <span>12&quot; Vinyl</span> <span class="rail-ct" id="rc-12"></span></div>
         <div class="rail-item" onclick="goFmt('7-inch')" id="rn-7"><i class="ti ti-circle" aria-hidden="true"></i> <span>7&quot; Vinyl</span> <span class="rail-ct" id="rc-7"></span></div>
         <div class="rail-item" onclick="goFmt('CD')" id="rn-cd"><i class="ti ti-disc" aria-hidden="true"></i> <span>CD</span> <span class="rail-ct" id="rc-cd"></span></div>
@@ -429,6 +523,20 @@ select {
     </aside>
     <main id="pg" class="page"></main>
   </div>
+
+  <!-- Mobile FAB -->
+  <button class="fab" onclick="openAdd()" aria-label="Add item"><i class="ti ti-plus"></i></button>
+
+  <!-- Mobile bottom nav -->
+  <nav class="bottomnav" aria-label="Mobile navigation">
+    <div class="bottomnav-inner">
+      <button class="bn-item on" onclick="goView('col');bnActive(this)" id="bn-col"><i class="ti ti-music"></i>Collection</button>
+      <button class="bn-item" onclick="goFmt('12-inch');bnActive(this)" id="bn-12"><i class="ti ti-circle"></i>Vinyl</button>
+      <button class="bn-item" onclick="goFmt('CD');bnActive(this)" id="bn-cd"><i class="ti ti-disc"></i>CD</button>
+      <button class="bn-item" onclick="goView('ie');bnActive(this)" id="bn-ie"><i class="ti ti-database"></i>Data</button>
+      <button class="bn-item" id="bn-admin" style="display:none" onclick="goView('users');bnActive(this)"><i class="ti ti-users"></i>Users</button>
+    </div>
+  </nav>
 </div>
 
 <!-- RECORD MODAL -->
@@ -518,11 +626,14 @@ function doAuth(){
   }
 }
 
+function bnActive(el){document.querySelectorAll('.bn-item').forEach(x=>x.classList.remove('on'));el.classList.add('on');}
+
 function enterApp(){
   document.getElementById('auth').style.display='none';
   document.getElementById('app').style.display='flex';
   document.getElementById('tu').textContent=CU.name;
   document.getElementById('admin-rail').style.display=CU.role==='admin'?'':'none';
+  if(CU.role==='admin')document.getElementById('bn-admin').style.display='';
   updCts();goView('col');
 }
 
@@ -587,13 +698,13 @@ function renderCol(){
   }
   let body='';
   if(!recs.length){
-    body=`<div class="empty"><i class="ti ti-vinyl"></i><div class="empty-title">${SQ?'No results found':'Nothing here yet'}</div><p class="empty-sub">${SQ?`No records matching "${esc(SQ)}"` :'Add your first record to start your collection.'}</p>${!SQ?`<button class="btn btn-ink" onclick="openAdd()"><i class="ti ti-plus"></i> Add record</button>`:''}</div>`;
+    body=`<div class="empty"><i class="ti ti-vinyl"></i><div class="empty-title">${SQ?'No results found':'Nothing here yet'}</div><p class="empty-sub">${SQ?`No items matching "${esc(SQ)}"` :'Add your first item to start your collection.'}</p>${!SQ?`<button class="btn btn-ink" onclick="openAdd()"><i class="ti ti-plus"></i> Add item</button>`:''}</div>`;
   } else if(VM==='grid'){
     body=`<div class="rec-grid">${recs.map(recCard).join('')}</div>`;
   } else {
     body=`<div class="rec-list"><div class="rec-row-head"><span></span><span>Title</span><span>Artist</span><span>Label</span><span>Format</span><span>Year</span><span></span></div>${recs.map(recRow).join('')}</div>`;
   }
-  return `<div class="page-hero"><div class="page-hero-row"><h1 class="page-hero-title">${vt}</h1><div class="vtoggle"><button class="${VM==='grid'?'on':''}" onclick="setVM('grid')" aria-label="Grid"><i class="ti ti-layout-grid"></i></button><button class="${VM==='list'?'on':''}" onclick="setVM('list')" aria-label="List"><i class="ti ti-list"></i></button></div><button class="btn btn-ink" onclick="openAdd()"><i class="ti ti-plus"></i> Add record</button></div>${stats}</div><div class="toolbar"><div class="search-box"><i class="ti ti-search"></i><input type="text" placeholder="Search artist, title, label…" value="${esc(SQ)}" oninput="doSearch(this.value)" /></div><select onchange="doFilter(this.value)" style="width:auto"><option value="">All formats</option><option value="12-inch" ${CF==='12-inch'?'selected':''}>12" Vinyl</option><option value="7-inch" ${CF==='7-inch'?'selected':''}>7" Vinyl</option><option value="CD" ${CF==='CD'?'selected':''}>CD</option><option value="Cassette" ${CF==='Cassette'?'selected':''}>Cassette</option></select></div><div class="content-area">${body}</div>`;
+  return `<div class="page-hero"><div class="page-hero-row"><h1 class="page-hero-title">${vt}</h1><div class="vtoggle"><button class="${VM==='grid'?'on':''}" onclick="setVM('grid')" aria-label="Grid"><i class="ti ti-layout-grid"></i></button><button class="${VM==='list'?'on':''}" onclick="setVM('list')" aria-label="List"><i class="ti ti-list"></i></button></div><button class="btn btn-ink hero-add-btn" onclick="openAdd()"><i class="ti ti-plus"></i> Add item</button></div>${stats}</div><div class="toolbar"><div class="search-box"><i class="ti ti-search"></i><input type="text" placeholder="Search artist, title, label…" value="${esc(SQ)}" oninput="doSearch(this.value)" /></div><select onchange="doFilter(this.value)" style="width:auto"><option value="">All formats</option><option value="12-inch" ${CF==='12-inch'?'selected':''}>12" Vinyl</option><option value="7-inch" ${CF==='7-inch'?'selected':''}>7" Vinyl</option><option value="CD" ${CF==='CD'?'selected':''}>CD</option><option value="Cassette" ${CF==='Cassette'?'selected':''}>Cassette</option></select></div><div class="content-area">${body}</div>`;
 }
 
 function recCard(r){
@@ -632,8 +743,8 @@ function setVM(m){VM=m;render();}
 
 function openAdd(){
   EID=null;IMG=null;
-  document.getElementById('mt').textContent='Add record';
-  document.getElementById('msb').textContent='Save record';
+  document.getElementById('mt').textContent='Add item';
+  document.getElementById('msb').textContent='Save item';
   ['fa','ft','fl','fn'].forEach(i=>document.getElementById(i).value='');
   document.getElementById('fy').value='';document.getElementById('ff').value='12-inch';
   resetImg();document.getElementById('me').style.display='none';
@@ -644,8 +755,8 @@ function openAdd(){
 function openEdit(id){
   const r=gR().find(r=>r.id===id);if(!r)return;
   EID=id;IMG=r.image||null;
-  document.getElementById('mt').textContent='Edit record';
-  document.getElementById('msb').textContent='Update record';
+  document.getElementById('mt').textContent='Edit item';
+  document.getElementById('msb').textContent='Update item';
   document.getElementById('fa').value=r.artist;document.getElementById('ft').value=r.title;
   document.getElementById('fl').value=r.label||'';document.getElementById('fy').value=r.year||'';
   document.getElementById('ff').value=r.format;document.getElementById('fn').value=r.notes||'';
@@ -664,14 +775,14 @@ function saveRec(){
   let recs=gR();
   if(EID){const i=recs.findIndex(r=>r.id===EID);if(i!==-1){rec.addedAt=recs[i].addedAt;recs[i]=rec;}}
   else{rec.addedAt=Date.now();recs.push(rec);}
-  sR(recs);updCts();closeM();render();toast(EID?'Record updated.':'Record added.');
+  sR(recs);updCts();closeM();render();toast(EID?'Item updated.':'Item added.');
 }
 
 function delRec(id){
-  if(!confirm('Delete this record?'))return;
+  if(!confirm('Delete this item?'))return;
   sR(gR().filter(r=>r.id!==id));updCts();
   if(CV==='detail')goView('col');else render();
-  toast('Record deleted.');
+  toast('Item deleted.');
 }
 
 function onImg(e){
