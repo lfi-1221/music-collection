@@ -4,490 +4,470 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Crate — Music Collection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+:root {
+  --ink: #0a0a0a;
+  --ink-60: rgba(10,10,10,0.6);
+  --ink-20: rgba(10,10,10,0.2);
+  --ink-08: rgba(10,10,10,0.08);
+  --ink-04: rgba(10,10,10,0.04);
+  --paper: #f8f6f1;
+  --white: #ffffff;
+  --accent: #c8a96e;
+  --accent-dim: rgba(200,169,110,0.15);
+  --red: #d94f3d;
+  --radius: 4px;
+  --radius-lg: 10px;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --sans: 'Inter', system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
   :root {
-    --bg-primary: #ffffff;
-    --bg-secondary: #f5f4f1;
-    --bg-tertiary: #efede8;
-    --text-primary: #1a1a1a;
-    --text-secondary: #6b6a66;
-    --text-tertiary: #9e9d99;
-    --border-tertiary: rgba(0,0,0,0.1);
-    --border-secondary: rgba(0,0,0,0.18);
-    --border-primary: rgba(0,0,0,0.3);
-    --border-danger: rgba(180,40,40,0.4);
-    --text-danger: #b02020;
-    --bg-danger: #fcebeb;
-    --bg-info: #e6f1fb;
-    --text-info: #185fa5;
-    --border-info: rgba(24,95,165,0.35);
-    --radius-md: 8px;
-    --radius-lg: 12px;
-    --radius-xl: 16px;
+    --ink: #f0ede6;
+    --ink-60: rgba(240,237,230,0.6);
+    --ink-20: rgba(240,237,230,0.2);
+    --ink-08: rgba(240,237,230,0.08);
+    --ink-04: rgba(240,237,230,0.04);
+    --paper: #111110;
+    --white: #1a1a18;
+    --accent: #c8a96e;
+    --accent-dim: rgba(200,169,110,0.12);
+    --red: #e07060;
   }
+}
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg-primary: #1e1e1c;
-      --bg-secondary: #282724;
-      --bg-tertiary: #222220;
-      --text-primary: #f0ede6;
-      --text-secondary: #9e9c96;
-      --text-tertiary: #6b6966;
-      --border-tertiary: rgba(255,255,255,0.08);
-      --border-secondary: rgba(255,255,255,0.14);
-      --border-primary: rgba(255,255,255,0.25);
-      --border-danger: rgba(220,80,80,0.4);
-      --text-danger: #e07070;
-      --bg-danger: #3a1a1a;
-      --bg-info: #0c2a42;
-      --text-info: #6ab0f0;
-      --border-info: rgba(106,176,240,0.3);
-    }
-  }
+body {
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+}
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--bg-tertiary);
-    color: var(--text-primary);
-    min-height: 100vh;
-    font-size: 15px;
-    line-height: 1.5;
-  }
+/* ── AUTH ── */
+#auth {
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+}
+.auth-left {
+  flex: 1;
+  background: #0a0a0a;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.auth-left-bg {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    45deg, transparent, transparent 40px,
+    rgba(255,255,255,0.015) 40px, rgba(255,255,255,0.015) 41px
+  );
+}
+.auth-brand {
+  font-family: var(--serif);
+  font-size: clamp(48px, 8vw, 80px);
+  color: #fff;
+  letter-spacing: -2px;
+  line-height: 1;
+  position: relative; z-index: 1;
+}
+.auth-brand em { color: var(--accent); font-style: italic; }
+.auth-tagline {
+  font-size: 12px; color: rgba(255,255,255,0.35);
+  letter-spacing: 0.14em; text-transform: uppercase;
+  position: relative; z-index: 1;
+}
+.auth-right {
+  width: 360px; flex-shrink: 0;
+  background: var(--white);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 3rem 2.5rem;
+}
+.auth-heading { font-family: var(--serif); font-size: 30px; margin-bottom: 8px; line-height: 1.1; }
+.auth-sub { font-size: 13px; color: var(--ink-60); margin-bottom: 2rem; }
 
-  /* ── Auth ── */
-  #auth-screen {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-  }
-  .auth-card {
-    background: var(--bg-primary);
-    border: 0.5px solid var(--border-tertiary);
-    border-radius: var(--radius-lg);
-    padding: 2.5rem 2rem;
-    width: 100%;
-    max-width: 380px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-  }
-  .auth-logo {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-  }
-  .auth-title { font-size: 22px; font-weight: 500; margin-bottom: 0.4rem; }
-  .auth-sub { font-size: 14px; color: var(--text-secondary); margin-bottom: 1.75rem; }
+label {
+  display: block; font-size: 11px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-60); margin-bottom: 6px;
+}
+input[type=text], input[type=password], input[type=number], select, textarea {
+  width: 100%; padding: 11px 14px; font-size: 14px; font-family: var(--sans);
+  border: 1px solid var(--ink-20); border-radius: var(--radius);
+  background: var(--white); color: var(--ink); outline: none;
+  transition: border-color 0.15s; -webkit-appearance: none;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--ink); }
+textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+.fg { margin-bottom: 1rem; }
 
-  .form-group { margin-bottom: 1rem; }
-  .form-group label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width: 100%; padding: 9px 12px; font-size: 14px;
-    border: 0.5px solid var(--border-secondary);
-    border-radius: var(--radius-md);
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    outline: none;
-    transition: border-color 0.15s;
-    font-family: inherit;
-  }
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus { border-color: var(--border-primary); }
-  .form-group textarea { resize: vertical; min-height: 80px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 11px 20px; font-size: 13px; font-weight: 500; font-family: var(--sans);
+  border-radius: var(--radius); cursor: pointer; border: 1px solid var(--ink-20);
+  background: var(--white); color: var(--ink);
+  transition: all 0.15s; letter-spacing: 0.02em;
+}
+.btn:hover { background: var(--ink-04); border-color: var(--ink-60); }
+.btn:active { transform: scale(0.98); }
+.btn-ink { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.btn-ink:hover { opacity: 0.88; background: var(--ink); }
+.btn-ghost { border-color: transparent; background: transparent; padding: 6px 10px; }
+.btn-ghost:hover { background: var(--ink-04); border-color: transparent; }
+.btn-danger { border-color: rgba(217,79,61,0.3); color: var(--red); background: transparent; }
+.btn-danger:hover { background: rgba(217,79,61,0.07); }
+.btn-full { width: 100%; }
+.btn-sm { padding: 7px 12px; font-size: 12px; }
 
-  .btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 9px 16px; font-size: 14px; font-weight: 500;
-    border-radius: var(--radius-md); cursor: pointer;
-    border: 0.5px solid var(--border-secondary);
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    transition: background 0.15s, transform 0.1s;
-    text-decoration: none; font-family: inherit;
-  }
-  .btn:hover { background: var(--bg-secondary); }
-  .btn:active { transform: scale(0.98); }
-  .btn-primary {
-    background: var(--text-primary);
-    color: var(--bg-primary);
-    border-color: var(--text-primary);
-  }
-  .btn-primary:hover { opacity: 0.85; background: var(--text-primary); }
-  .btn-danger { border-color: var(--border-danger); color: var(--text-danger); }
-  .btn-danger:hover { background: var(--bg-danger); }
-  .btn-full { width: 100%; justify-content: center; }
+.auth-toggle { margin-top: 1.5rem; font-size: 13px; color: var(--ink-60); text-align: center; }
+.auth-toggle a { color: var(--ink); cursor: pointer; text-decoration: underline; font-weight: 500; }
+.err { font-size: 12px; color: var(--red); margin-top: 6px; }
 
-  .auth-toggle { text-align: center; margin-top: 1.25rem; font-size: 13px; color: var(--text-secondary); }
-  .auth-toggle a { color: var(--text-primary); cursor: pointer; text-decoration: underline; }
-  .error-msg { font-size: 13px; color: var(--text-danger); margin-top: 0.5rem; }
+/* ── APP ── */
+#app { display: none; min-height: 100vh; flex-direction: column; }
 
-  /* ── App Shell ── */
-  #app-screen { display: none; min-height: 100vh; flex-direction: column; }
+.topbar {
+  height: 56px; background: var(--white); border-bottom: 1px solid var(--ink-08);
+  display: flex; align-items: center;
+  position: sticky; top: 0; z-index: 50;
+}
+.topbar-logo {
+  font-family: var(--serif); font-size: 22px; letter-spacing: -0.5px;
+  color: var(--ink); padding: 0 1.5rem; border-right: 1px solid var(--ink-08);
+  height: 100%; display: flex; align-items: center; flex-shrink: 0;
+}
+.topbar-logo em { color: var(--accent); font-style: italic; }
+.topbar-user { font-size: 12px; color: var(--ink-60); margin-left: auto; padding-right: 1rem; }
+.topbar-signout {
+  height: 100%; padding: 0 1.5rem; font-size: 12px; font-weight: 500;
+  border: none; border-left: 1px solid var(--ink-08); background: none;
+  cursor: pointer; color: var(--ink-60); letter-spacing: 0.06em; text-transform: uppercase;
+  transition: color 0.15s; font-family: var(--sans);
+}
+.topbar-signout:hover { color: var(--ink); }
 
-  .topnav {
-    background: var(--bg-primary);
-    border-bottom: 0.5px solid var(--border-tertiary);
-    padding: 0 1.5rem;
-    height: 52px;
-    display: flex; align-items: center; gap: 16px;
-    position: sticky; top: 0; z-index: 100;
-  }
-  .nav-logo { font-size: 13px; font-weight: 600; letter-spacing: 0.12em; color: var(--text-secondary); text-transform: uppercase; flex: 1; }
-  .nav-user { font-size: 13px; color: var(--text-secondary); }
+.shell { display: flex; flex: 1; }
 
-  .main-layout { display: flex; flex: 1; }
-  .sidebar {
-    width: 200px; flex-shrink: 0;
-    background: var(--bg-primary);
-    border-right: 0.5px solid var(--border-tertiary);
-    padding: 1.25rem 0;
-    position: sticky; top: 52px; height: calc(100vh - 52px); overflow-y: auto;
-  }
-  .sidebar-section { margin-bottom: 1.5rem; }
-  .sidebar-label {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--text-tertiary);
-    padding: 0 1.25rem; margin-bottom: 6px;
-  }
-  .sidebar-item {
-    display: flex; align-items: center; gap: 8px;
-    padding: 7px 1.25rem; font-size: 14px; cursor: pointer;
-    color: var(--text-secondary); transition: background 0.1s, color 0.1s;
-    border-left: 2px solid transparent;
-  }
-  .sidebar-item:hover { background: var(--bg-secondary); color: var(--text-primary); }
-  .sidebar-item.active {
-    background: var(--bg-secondary); color: var(--text-primary);
-    border-left-color: var(--text-primary); font-weight: 500;
-  }
-  .sidebar-item i { font-size: 15px; }
-  .sidebar-count { margin-left: auto; font-size: 12px; color: var(--text-tertiary); }
+.rail {
+  width: 220px; flex-shrink: 0;
+  background: var(--white); border-right: 1px solid var(--ink-08);
+  padding: 1.5rem 0;
+  position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto;
+}
+.rail-section { margin-bottom: 2rem; }
+.rail-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-60); padding: 0 1.5rem; margin-bottom: 6px;
+}
+.rail-item {
+  display: flex; align-items: center; gap: 10px; padding: 8px 1.5rem;
+  font-size: 13px; color: var(--ink-60); cursor: pointer;
+  transition: color 0.12s, background 0.12s;
+  border-left: 2px solid transparent;
+}
+.rail-item:hover { color: var(--ink); background: var(--ink-04); }
+.rail-item.on { color: var(--ink); font-weight: 500; border-left-color: var(--ink); background: var(--ink-04); }
+.rail-item i { font-size: 16px; flex-shrink: 0; }
+.rail-ct { margin-left: auto; font-size: 11px; color: var(--ink-60); background: var(--ink-08); padding: 1px 6px; border-radius: 20px; }
 
-  .content { flex: 1; padding: 1.75rem; min-width: 0; }
-  .content-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; flex-wrap: wrap; }
-  .content-title { font-size: 18px; font-weight: 500; flex: 1; }
+.page { flex: 1; min-width: 0; }
 
-  .toolbar { display: flex; gap: 10px; margin-bottom: 1.25rem; flex-wrap: wrap; }
-  .search-wrap { position: relative; flex: 1; min-width: 200px; }
-  .search-wrap i { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 15px; color: var(--text-tertiary); pointer-events: none; }
-  .search-wrap input { padding-left: 34px !important; }
-  .filter-select {
-    padding: 9px 12px; font-size: 13px;
-    border: 0.5px solid var(--border-secondary);
-    border-radius: var(--radius-md);
-    background: var(--bg-primary); color: var(--text-primary);
-    cursor: pointer; outline: none; font-family: inherit;
-  }
+/* ── PAGE HERO ── */
+.page-hero {
+  padding: 2.5rem 2.5rem 2rem;
+  border-bottom: 1px solid var(--ink-08);
+  background: var(--white);
+}
+.page-hero-row { display: flex; align-items: flex-end; gap: 16px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.page-hero-title { font-family: var(--serif); font-size: 36px; letter-spacing: -0.5px; flex: 1; line-height: 1; }
+.page-hero-title em { color: var(--accent); }
 
-  /* ── Records Grid ── */
-  .records-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
-  .record-card {
-    background: var(--bg-primary); border: 0.5px solid var(--border-tertiary);
-    border-radius: var(--radius-lg); overflow: hidden; cursor: pointer;
-    transition: border-color 0.15s, transform 0.15s;
-  }
-  .record-card:hover { border-color: var(--border-primary); transform: translateY(-2px); }
-  .record-img { width: 100%; aspect-ratio: 1; background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .record-img img { width: 100%; height: 100%; object-fit: cover; }
-  .record-img-placeholder { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-tertiary); }
-  .record-img-placeholder i { font-size: 28px; }
-  .record-img-placeholder span { font-size: 11px; }
-  .record-info { padding: 10px 12px; }
-  .record-title { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .record-artist { font-size: 13px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
-  .record-meta { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
-  .format-badge {
-    font-size: 11px; font-weight: 500; padding: 2px 7px; border-radius: 20px;
-    background: var(--bg-secondary); color: var(--text-secondary);
-    border: 0.5px solid var(--border-tertiary);
-  }
-  .record-year { font-size: 12px; color: var(--text-tertiary); margin-left: auto; }
+/* ── STATS ── */
+.stats { display: flex; gap: 1px; background: var(--ink-08); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); overflow: hidden; }
+.stat { flex: 1; background: var(--white); padding: 1.25rem 1.5rem; }
+.stat-n { font-family: var(--serif); font-size: 32px; line-height: 1; }
+.stat-l { font-size: 11px; color: var(--ink-60); margin-top: 4px; letter-spacing: 0.05em; text-transform: uppercase; }
 
-  /* ── Records List ── */
-  .records-list { display: flex; flex-direction: column; gap: 1px; }
-  .record-row {
-    display: grid; grid-template-columns: 44px 1fr 1fr 80px 60px 60px 80px;
-    align-items: center; gap: 12px; padding: 10px 12px;
-    background: var(--bg-primary); border: 0.5px solid var(--border-tertiary);
-    border-radius: var(--radius-md); cursor: pointer; transition: border-color 0.1s;
-  }
-  .record-row:hover { border-color: var(--border-primary); }
-  .record-row-thumb {
-    width: 44px; height: 44px; border-radius: 4px; overflow: hidden;
-    background: var(--bg-secondary); display: flex; align-items: center; justify-content: center;
-  }
-  .record-row-thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .row-header { font-size: 12px; color: var(--text-tertiary); }
-  .record-row.header-row { cursor: default; }
-  .record-row.header-row:hover { border-color: var(--border-tertiary); }
+/* ── TOOLBAR ── */
+.toolbar {
+  display: flex; gap: 10px; padding: 1.25rem 2.5rem; align-items: center;
+  flex-wrap: wrap; border-bottom: 1px solid var(--ink-08); background: var(--paper);
+}
+.search-box { position: relative; flex: 1; min-width: 200px; }
+.search-box i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--ink-60); pointer-events: none; }
+.search-box input { padding-left: 38px !important; background: var(--white); }
+.vtoggle { display: flex; border: 1px solid var(--ink-20); border-radius: var(--radius); overflow: hidden; }
+.vtoggle button { padding: 8px 11px; background: none; border: none; cursor: pointer; color: var(--ink-60); font-size: 16px; transition: background 0.1s; }
+.vtoggle button.on { background: var(--ink); color: var(--paper); }
 
-  /* ── Empty State ── */
-  .empty-state { text-align: center; padding: 4rem 2rem; color: var(--text-secondary); }
-  .empty-state i { font-size: 48px; color: var(--text-tertiary); margin-bottom: 1rem; display: block; }
-  .empty-state p { font-size: 15px; margin-bottom: 1rem; }
+/* ── CONTENT ── */
+.content-area { padding: 2rem 2.5rem; }
 
-  /* ── Modal ── */
-  .modal-backdrop {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200;
-    display: flex; align-items: center; justify-content: center; padding: 1rem;
-  }
-  .modal {
-    background: var(--bg-primary); border: 0.5px solid var(--border-tertiary);
-    border-radius: var(--radius-lg); width: 100%; max-width: 520px;
-    max-height: 90vh; overflow-y: auto; padding: 1.75rem;
-  }
-  .modal-header { display: flex; align-items: center; gap: 8px; margin-bottom: 1.5rem; }
-  .modal-title { font-size: 18px; font-weight: 500; flex: 1; }
-  .modal-footer {
-    display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.5rem;
-    padding-top: 1.25rem; border-top: 0.5px solid var(--border-tertiary);
-  }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+/* ── GRID ── */
+.rec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+.rec-card {
+  background: var(--white); border: 1px solid var(--ink-08); border-radius: var(--radius-lg);
+  overflow: hidden; cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.rec-card:hover { border-color: var(--ink-20); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+.rec-art { width: 100%; aspect-ratio: 1; background: var(--ink-04); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.rec-art img { width: 100%; height: 100%; object-fit: cover; }
+.rec-art-ph { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.rec-art-ph i { font-size: 32px; color: var(--ink-20); }
+.rec-art-ph span { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-60); }
+.rec-body { padding: 12px 14px; }
+.rec-title { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3; }
+.rec-artist { font-size: 12px; color: var(--ink-60); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+.rec-foot { display: flex; align-items: center; gap: 6px; margin-top: 10px; }
+.fmt { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; }
+.fmt-12 { background: var(--ink); color: var(--paper); }
+.fmt-7  { background: var(--ink-04); color: var(--ink); border: 1px solid var(--ink-20); }
+.fmt-cd { background: var(--accent-dim); color: #7a5e20; }
+.fmt-ca { background: rgba(100,80,180,0.1); color: #4a3aa0; }
+.rec-year { font-size: 11px; color: var(--ink-60); margin-left: auto; }
 
-  /* ── Image Upload ── */
-  .img-upload {
-    border: 0.5px dashed var(--border-secondary); border-radius: var(--radius-md);
-    padding: 1.5rem; text-align: center; cursor: pointer; transition: background 0.1s;
-    color: var(--text-secondary); font-size: 14px;
-  }
-  .img-upload:hover { background: var(--bg-secondary); }
-  .img-upload i { font-size: 28px; display: block; margin-bottom: 8px; color: var(--text-tertiary); }
-  .img-preview { position: relative; display: inline-block; }
-  .img-preview img { max-height: 120px; border-radius: var(--radius-md); border: 0.5px solid var(--border-tertiary); }
-  .img-preview button {
-    position: absolute; top: -6px; right: -6px;
-    background: var(--bg-primary); border: 0.5px solid var(--border-tertiary);
-    border-radius: 50%; width: 22px; height: 22px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 12px; color: var(--text-secondary);
-  }
+/* ── LIST ── */
+.rec-list { display: flex; flex-direction: column; }
+.rec-row-head { display: grid; grid-template-columns: 52px 1fr 140px 100px 68px 56px 72px; gap: 12px; padding: 8px 16px; border-bottom: 1px solid var(--ink-08); }
+.rec-row-head span { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-60); }
+.rec-row { display: grid; grid-template-columns: 52px 1fr 140px 100px 68px 56px 72px; gap: 12px; align-items: center; padding: 10px 16px; border-bottom: 1px solid var(--ink-04); cursor: pointer; transition: background 0.1s; }
+.rec-row:hover { background: var(--white); }
+.rec-thumb { width: 52px; height: 52px; border-radius: var(--radius); overflow: hidden; background: var(--ink-04); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.rec-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.rec-row-title { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rec-row-sub { font-size: 13px; color: var(--ink-60); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rec-row-year { font-size: 13px; color: var(--ink-60); }
+.row-actions { display: flex; gap: 4px; justify-content: flex-end; opacity: 0; transition: opacity 0.15s; }
+.rec-row:hover .row-actions { opacity: 1; }
 
-  /* ── Detail View ── */
-  .detail-panel { max-width: 680px; }
-  .detail-hero { display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
-  .detail-cover {
-    width: 140px; height: 140px; flex-shrink: 0;
-    border-radius: var(--radius-md); background: var(--bg-secondary);
-    border: 0.5px solid var(--border-tertiary); overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .detail-cover img { width: 100%; height: 100%; object-fit: cover; }
-  .detail-cover-placeholder { color: var(--text-tertiary); font-size: 40px; }
-  .detail-meta-list { display: flex; flex-direction: column; gap: 8px; justify-content: center; }
-  .detail-meta-row { display: flex; gap: 8px; align-items: baseline; }
-  .detail-meta-label { font-size: 13px; color: var(--text-tertiary); min-width: 60px; }
-  .detail-meta-val { font-size: 14px; }
-  .detail-title { font-size: 22px; font-weight: 500; margin-bottom: 4px; }
-  .detail-artist { font-size: 16px; color: var(--text-secondary); margin-bottom: 1rem; }
-  .detail-notes {
-    background: var(--bg-secondary); border-radius: var(--radius-md);
-    padding: 1rem; font-size: 14px; line-height: 1.6; color: var(--text-secondary);
-  }
+/* ── EMPTY ── */
+.empty { text-align: center; padding: 5rem 2rem; }
+.empty i { font-size: 56px; color: var(--ink-20); display: block; margin-bottom: 1.5rem; }
+.empty-title { font-family: var(--serif); font-size: 28px; margin-bottom: 8px; }
+.empty-sub { font-size: 14px; color: var(--ink-60); margin-bottom: 2rem; }
 
-  /* ── Stats ── */
-  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 10px; margin-bottom: 1.5rem; }
-  .stat-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 1rem; }
-  .stat-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
-  .stat-val { font-size: 22px; font-weight: 500; }
+/* ── MODAL ── */
+.overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200;
+  display: flex; align-items: center; justify-content: center; padding: 1rem;
+  backdrop-filter: blur(3px);
+}
+.modal {
+  background: var(--white); border-radius: var(--radius-lg);
+  width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto; padding: 2rem;
+}
+.modal-hd { display: flex; align-items: center; gap: 8px; margin-bottom: 1.75rem; border-bottom: 1px solid var(--ink-08); padding-bottom: 1.25rem; }
+.modal-title { font-family: var(--serif); font-size: 24px; flex: 1; }
+.modal-ft { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--ink-08); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-  /* ── Users ── */
-  .user-table { width: 100%; border-collapse: collapse; }
-  .user-table th { font-size: 12px; font-weight: 500; color: var(--text-tertiary); text-align: left; padding: 8px 12px; border-bottom: 0.5px solid var(--border-tertiary); }
-  .user-table td { padding: 10px 12px; font-size: 14px; border-bottom: 0.5px solid var(--border-tertiary); }
-  .user-table tr:last-child td { border-bottom: none; }
-  .role-badge { padding: 2px 8px; border-radius: 20px; font-size: 12px; }
-  .role-admin { background: var(--bg-info); color: var(--text-info); border: 0.5px solid var(--border-info); }
-  .role-user { background: var(--bg-secondary); color: var(--text-secondary); border: 0.5px solid var(--border-tertiary); }
+/* ── IMAGE UPLOAD ── */
+.img-drop {
+  border: 1px dashed var(--ink-20); border-radius: var(--radius-lg);
+  padding: 2rem; text-align: center; cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+  color: var(--ink-60); font-size: 13px;
+}
+.img-drop:hover { background: var(--ink-04); border-color: var(--ink-60); }
+.img-drop i { font-size: 32px; display: block; margin-bottom: 8px; color: var(--ink-20); }
+.img-prev { position: relative; display: inline-block; }
+.img-prev img { max-height: 130px; border-radius: var(--radius); border: 1px solid var(--ink-08); }
+.img-prev button {
+  position: absolute; top: -8px; right: -8px;
+  background: var(--ink); color: var(--paper); border: none;
+  border-radius: 50%; width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 12px;
+}
 
-  /* ── Import / Export ── */
-  .io-area { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
-  .io-card {
-    flex: 1; min-width: 200px;
-    background: var(--bg-primary); border: 0.5px solid var(--border-tertiary);
-    border-radius: var(--radius-lg); padding: 1.25rem;
-  }
-  .io-card h3 { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
-  .io-card p { font-size: 13px; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.5; }
+/* ── DETAIL ── */
+.detail-wrap { padding: 2.5rem; max-width: 700px; }
+.detail-back { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-60); cursor: pointer; margin-bottom: 2rem; transition: color 0.12s; }
+.detail-back:hover { color: var(--ink); }
+.detail-hero { display: flex; gap: 2rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+.detail-cover { width: 160px; height: 160px; flex-shrink: 0; border-radius: var(--radius-lg); overflow: hidden; background: var(--ink-04); display: flex; align-items: center; justify-content: center; }
+.detail-cover img { width: 100%; height: 100%; object-fit: cover; }
+.detail-cover i { font-size: 52px; color: var(--ink-20); }
+.detail-info { flex: 1; display: flex; flex-direction: column; justify-content: center; min-width: 180px; }
+.detail-title { font-family: var(--serif); font-size: 32px; line-height: 1.1; margin: 10px 0 4px; letter-spacing: -0.5px; }
+.detail-artist { font-size: 18px; color: var(--ink-60); margin-bottom: 1.25rem; }
+.detail-meta { display: flex; flex-direction: column; gap: 6px; }
+.detail-meta-r { display: flex; gap: 10px; font-size: 13px; }
+.detail-meta-k { color: var(--ink-60); min-width: 50px; }
+.detail-notes { background: var(--ink-04); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; font-size: 14px; line-height: 1.7; color: var(--ink-60); }
+.detail-actions { display: flex; gap: 8px; margin-top: 2rem; }
 
-  /* ── View Toggle ── */
-  .view-toggle { display: flex; border: 0.5px solid var(--border-secondary); border-radius: var(--radius-md); overflow: hidden; }
-  .view-toggle button { padding: 6px 10px; background: none; border: none; cursor: pointer; color: var(--text-secondary); font-size: 16px; transition: background 0.1s; }
-  .view-toggle button.active { background: var(--bg-secondary); color: var(--text-primary); }
+/* ── USERS ── */
+.user-wrap { padding: 2rem 2.5rem; }
+.users-table-wrap { background: var(--white); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); overflow: hidden; }
+table { width: 100%; border-collapse: collapse; }
+th { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-60); padding: 12px 16px; border-bottom: 1px solid var(--ink-08); text-align: left; }
+td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid var(--ink-04); }
+tr:last-child td { border-bottom: none; }
+.role-pill { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 9px; border-radius: 2px; }
+.role-admin { background: var(--ink); color: var(--paper); }
+.role-user { background: var(--ink-08); color: var(--ink-60); }
 
-  /* ── Toast ── */
-  .toast {
-    position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 999;
-    background: var(--text-primary); color: var(--bg-primary);
-    padding: 10px 16px; border-radius: var(--radius-md); font-size: 14px;
-    opacity: 0; transform: translateY(8px); transition: all 0.25s; pointer-events: none;
-  }
-  .toast.show { opacity: 1; transform: translateY(0); }
+/* ── IMPORT / EXPORT ── */
+.ie-wrap { padding: 2rem 2.5rem; }
+.ie-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.ie-card { background: var(--white); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); padding: 1.75rem; }
+.ie-card h3 { font-family: var(--serif); font-size: 20px; margin-bottom: 8px; }
+.ie-card p { font-size: 13px; color: var(--ink-60); line-height: 1.6; margin-bottom: 1rem; }
+.divider { border: none; border-top: 1px solid var(--ink-08); margin: 1.25rem 0; }
+.info-box { margin-top: 1.5rem; padding: 1.25rem 1.5rem; background: var(--white); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); font-size: 12px; color: var(--ink-60); line-height: 1.7; }
+code { font-family: monospace; font-size: 11px; background: var(--ink-04); padding: 1px 5px; border-radius: 2px; }
 
-  /* ── Misc ── */
-  .divider { border: none; border-top: 0.5px solid var(--border-tertiary); margin: 1.25rem 0; }
-  code { font-family: monospace; font-size: 13px; background: var(--bg-secondary); padding: 1px 5px; border-radius: 4px; }
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(12px);
+  background: var(--ink); color: var(--paper); padding: 12px 24px;
+  border-radius: 40px; font-size: 13px; font-weight: 500;
+  opacity: 0; transition: all 0.25s; pointer-events: none; z-index: 999; white-space: nowrap;
+}
+.toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ── Responsive ── */
-  @media (max-width: 640px) {
-    .sidebar { width: 160px; }
-    .record-row { grid-template-columns: 36px 1fr 80px 50px; }
-    .record-row > *:nth-child(3),
-    .record-row > *:nth-child(4),
-    .record-row > *:nth-child(6) { display: none; }
-    .form-row { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 480px) {
-    .main-layout { flex-direction: column; }
-    .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 0.5px solid var(--border-tertiary); display: flex; overflow-x: auto; padding: 0.5rem 0; }
-    .sidebar-section { display: flex; margin-bottom: 0; }
-    .sidebar-label { display: none; }
-    .sidebar-item { white-space: nowrap; border-left: none; border-bottom: 2px solid transparent; }
-    .sidebar-item.active { border-left-color: transparent; border-bottom-color: var(--text-primary); }
-  }
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%230a0a0a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px !important;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .auth-left { display: none; }
+  .auth-right { width: 100%; }
+  .rail { width: 180px; }
+  .ie-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .rail { width: 52px; }
+  .rail-label, .rail-item span:not(.rail-ct), .rail-ct { display: none; }
+  .rail-item { justify-content: center; padding: 10px; }
+  .page-hero { padding: 1.5rem 1rem 1rem; }
+  .content-area { padding: 1.25rem 1rem; }
+  .toolbar { padding: 1rem; }
+  .form-row { grid-template-columns: 1fr; }
+  .stats { flex-wrap: wrap; }
+  .stat { min-width: 80px; }
+}
 </style>
 </head>
 <body>
 
-<!-- AUTH SCREEN -->
-<div id="auth-screen">
-  <div class="auth-card">
-    <p class="auth-logo">Crate</p>
-    <h1 class="auth-title" id="auth-heading">Sign in</h1>
-    <p class="auth-sub" id="auth-sub">Access your music collection</p>
-    <div id="name-group" class="form-group" style="display:none">
+<!-- AUTH -->
+<div id="auth">
+  <div class="auth-left">
+    <div class="auth-left-bg"></div>
+    <div class="auth-brand">Cr<em>a</em>te</div>
+    <div class="auth-tagline">Your music collection, catalogued</div>
+  </div>
+  <div class="auth-right">
+    <h1 class="auth-heading" id="ah">Sign in</h1>
+    <p class="auth-sub" id="as">Access your collection</p>
+    <div class="fg" id="ng" style="display:none">
       <label>Name</label>
-      <input type="text" id="reg-name" placeholder="Your name" />
+      <input type="text" id="rn" placeholder="Your name" />
     </div>
-    <div class="form-group">
+    <div class="fg">
       <label>Username</label>
-      <input type="text" id="auth-username" placeholder="username" autocomplete="username" />
+      <input type="text" id="au" placeholder="username" autocomplete="username" />
     </div>
-    <div class="form-group">
+    <div class="fg">
       <label>Password</label>
-      <input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password" />
+      <input type="password" id="ap" placeholder="••••••••" autocomplete="current-password" />
     </div>
-    <div id="auth-error" class="error-msg" style="display:none"></div>
-    <button class="btn btn-primary btn-full" onclick="submitAuth()" style="margin-top:0.5rem">
-      <span id="auth-btn-label">Sign in</span>
+    <div id="ae" class="err" style="display:none"></div>
+    <button class="btn btn-ink btn-full" onclick="doAuth()" style="margin-top:6px">
+      <span id="abl">Sign in</span>
     </button>
     <div class="auth-toggle">
-      <span id="auth-toggle-text">No account? </span>
-      <a onclick="toggleAuthMode()"><span id="auth-toggle-link">Register</span></a>
+      <span id="att">No account? </span>
+      <a onclick="togAuth()"><span id="atl">Register</span></a>
     </div>
   </div>
 </div>
 
-<!-- APP SCREEN -->
-<div id="app-screen" style="display:none; flex-direction:column; min-height:100vh">
-  <nav class="topnav">
-    <span class="nav-logo">Crate</span>
-    <span class="nav-user" id="nav-username"></span>
-    <button class="btn" onclick="signOut()" style="font-size:13px; padding:6px 12px">Sign out</button>
+<!-- APP -->
+<div id="app" style="flex-direction:column; min-height:100vh">
+  <nav class="topbar">
+    <div class="topbar-logo">Cr<em>a</em>te</div>
+    <span class="topbar-user" id="tu"></span>
+    <button class="topbar-signout" onclick="doOut()">Sign out</button>
   </nav>
-  <div class="main-layout">
-    <aside class="sidebar">
-      <div class="sidebar-section">
-        <p class="sidebar-label">Collection</p>
-        <div class="sidebar-item active" onclick="showView('collection')" id="nav-collection">
-          <i class="ti ti-music" aria-hidden="true"></i> All records
-          <span class="sidebar-count" id="nav-count-all"></span>
-        </div>
-        <div class="sidebar-item" onclick="filterFormat('12-inch')" id="nav-12inch">
-          <i class="ti ti-circle" aria-hidden="true"></i> 12" Vinyl
-          <span class="sidebar-count" id="nav-count-12"></span>
-        </div>
-        <div class="sidebar-item" onclick="filterFormat('7-inch')" id="nav-7inch">
-          <i class="ti ti-circle" aria-hidden="true"></i> 7" Vinyl
-          <span class="sidebar-count" id="nav-count-7"></span>
-        </div>
-        <div class="sidebar-item" onclick="filterFormat('CD')" id="nav-cd">
-          <i class="ti ti-disc" aria-hidden="true"></i> CD
-          <span class="sidebar-count" id="nav-count-cd"></span>
-        </div>
-        <div class="sidebar-item" onclick="filterFormat('Cassette')" id="nav-cass">
-          <i class="ti ti-device-audio-tape" aria-hidden="true"></i> Cassette
-          <span class="sidebar-count" id="nav-count-cass"></span>
-        </div>
+  <div class="shell">
+    <aside class="rail">
+      <div class="rail-section">
+        <p class="rail-label">Collection</p>
+        <div class="rail-item on" onclick="goView('col')" id="rn-col"><i class="ti ti-music" aria-hidden="true"></i> <span>All records</span> <span class="rail-ct" id="rc-all"></span></div>
+        <div class="rail-item" onclick="goFmt('12-inch')" id="rn-12"><i class="ti ti-circle" aria-hidden="true"></i> <span>12&quot; Vinyl</span> <span class="rail-ct" id="rc-12"></span></div>
+        <div class="rail-item" onclick="goFmt('7-inch')" id="rn-7"><i class="ti ti-circle" aria-hidden="true"></i> <span>7&quot; Vinyl</span> <span class="rail-ct" id="rc-7"></span></div>
+        <div class="rail-item" onclick="goFmt('CD')" id="rn-cd"><i class="ti ti-disc" aria-hidden="true"></i> <span>CD</span> <span class="rail-ct" id="rc-cd"></span></div>
+        <div class="rail-item" onclick="goFmt('Cassette')" id="rn-ca"><i class="ti ti-device-audio-tape" aria-hidden="true"></i> <span>Cassette</span> <span class="rail-ct" id="rc-ca"></span></div>
       </div>
-      <div class="sidebar-section" id="admin-section" style="display:none">
-        <p class="sidebar-label">Admin</p>
-        <div class="sidebar-item" onclick="showView('users')" id="nav-users">
-          <i class="ti ti-users" aria-hidden="true"></i> Users
-        </div>
+      <div class="rail-section" id="admin-rail" style="display:none">
+        <p class="rail-label">Admin</p>
+        <div class="rail-item" onclick="goView('users')" id="rn-users"><i class="ti ti-users" aria-hidden="true"></i> <span>Users</span></div>
       </div>
-      <div class="sidebar-section">
-        <p class="sidebar-label">Data</p>
-        <div class="sidebar-item" onclick="showView('import-export')" id="nav-ie">
-          <i class="ti ti-database" aria-hidden="true"></i> Import / Export
-        </div>
+      <div class="rail-section">
+        <p class="rail-label">Data</p>
+        <div class="rail-item" onclick="goView('ie')" id="rn-ie"><i class="ti ti-database" aria-hidden="true"></i> <span>Import / Export</span></div>
       </div>
     </aside>
-    <main class="content" id="main-content"></main>
+    <main id="pg" class="page"></main>
   </div>
 </div>
 
 <!-- RECORD MODAL -->
-<div class="modal-backdrop" id="modal-record" style="display:none" onclick="closeModalBackdrop(event)">
+<div class="overlay" id="mo" style="display:none" onclick="bgClose(event)">
   <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <h2 class="modal-title" id="modal-title">Add record</h2>
-      <button class="btn" onclick="closeModal()" aria-label="Close" style="padding:6px 8px"><i class="ti ti-x"></i></button>
+    <div class="modal-hd">
+      <h2 class="modal-title" id="mt">Add record</h2>
+      <button class="btn btn-ghost" onclick="closeM()" aria-label="Close" style="border-radius:50%;padding:6px 8px"><i class="ti ti-x"></i></button>
     </div>
-    <div class="form-group">
+    <div class="fg">
       <label>Cover image</label>
-      <div id="img-upload-zone" class="img-upload" onclick="document.getElementById('img-file-input').click()" role="button" tabindex="0">
+      <div id="imgz" class="img-drop" onclick="document.getElementById('imgf').click()">
         <i class="ti ti-photo-up" aria-hidden="true"></i>
         Click to upload cover image
       </div>
-      <input type="file" id="img-file-input" accept="image/*" style="display:none" onchange="handleImgUpload(event)" />
+      <input type="file" id="imgf" accept="image/*" style="display:none" onchange="onImg(event)" />
     </div>
     <div class="form-row">
-      <div class="form-group">
-        <label>Artist *</label>
-        <input type="text" id="f-artist" placeholder="Artist name" />
-      </div>
-      <div class="form-group">
-        <label>Title *</label>
-        <input type="text" id="f-title" placeholder="Album / single title" />
-      </div>
+      <div class="fg"><label>Artist *</label><input type="text" id="fa" placeholder="Artist name" /></div>
+      <div class="fg"><label>Title *</label><input type="text" id="ft" placeholder="Album / single title" /></div>
     </div>
     <div class="form-row">
-      <div class="form-group">
-        <label>Label</label>
-        <input type="text" id="f-label" placeholder="Record label" />
-      </div>
-      <div class="form-group">
-        <label>Year</label>
-        <input type="number" id="f-year" placeholder="e.g. 1979" min="1900" max="2099" />
-      </div>
+      <div class="fg"><label>Label</label><input type="text" id="fl" placeholder="Record label" /></div>
+      <div class="fg"><label>Year</label><input type="number" id="fy" placeholder="e.g. 1979" min="1900" max="2099" /></div>
     </div>
-    <div class="form-group">
+    <div class="fg">
       <label>Format</label>
-      <select id="f-format">
-        <option value="12-inch">12" Vinyl</option>
-        <option value="7-inch">7" Vinyl</option>
+      <select id="ff">
+        <option value="12-inch">12&quot; Vinyl</option>
+        <option value="7-inch">7&quot; Vinyl</option>
         <option value="CD">CD</option>
         <option value="Cassette">Cassette</option>
       </select>
     </div>
-    <div class="form-group">
-      <label>Notes</label>
-      <textarea id="f-notes" placeholder="Condition, pressing info, personal notes…"></textarea>
-    </div>
-    <div id="modal-error" class="error-msg" style="display:none"></div>
-    <div class="modal-footer">
-      <button class="btn" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveRecord()" id="modal-save-btn">Save record</button>
+    <div class="fg"><label>Notes</label><textarea id="fn" placeholder="Condition, pressing info, personal notes…"></textarea></div>
+    <div id="me" class="err" style="display:none"></div>
+    <div class="modal-ft">
+      <button class="btn" onclick="closeM()">Cancel</button>
+      <button class="btn btn-ink" onclick="saveRec()" id="msb">Save record</button>
     </div>
   </div>
 </div>
@@ -495,529 +475,258 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-// ── Storage ──────────────────────────────────────────────────────────────────
-const USERS_KEY = 'crate_users';
-const SESSION_KEY = 'crate_session';
-const RECORDS_KEY = 'crate_records';
+const UK='crate_u',SK='crate_s',RK='crate_r';
+const gU=()=>{try{return JSON.parse(localStorage.getItem(UK))||[]}catch{return[]}};
+const sU=u=>localStorage.setItem(UK,JSON.stringify(u));
+const gR=()=>{try{return JSON.parse(localStorage.getItem(RK))||[]}catch{return[]}};
+const sR=r=>localStorage.setItem(RK,JSON.stringify(r));
+const gS=()=>{try{return JSON.parse(localStorage.getItem(SK))}catch{return null}};
+const sS=s=>localStorage.setItem(SK,JSON.stringify(s));
+const cS=()=>localStorage.removeItem(SK);
 
-const getUsers = () => { try { return JSON.parse(localStorage.getItem(USERS_KEY)) || []; } catch { return []; } };
-const setUsers = u => localStorage.setItem(USERS_KEY, JSON.stringify(u));
-const getRecords = () => { try { return JSON.parse(localStorage.getItem(RECORDS_KEY)) || []; } catch { return []; } };
-const setRecords = r => localStorage.setItem(RECORDS_KEY, JSON.stringify(r));
-const getSession = () => { try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch { return null; } };
-const setSession = s => localStorage.setItem(SESSION_KEY, JSON.stringify(s));
-const clearSession = () => localStorage.removeItem(SESSION_KEY);
+function seed(){if(!gU().length)sU([{id:'u1',username:'admin',password:'admin',name:'Admin',role:'admin',createdAt:Date.now()}])}
 
-function seedAdmin() {
-  if (getUsers().length === 0) {
-    setUsers([{ id: 'u1', username: 'admin', password: 'admin', name: 'Admin', role: 'admin', createdAt: Date.now() }]);
-  }
+let CU=null,CV='col',CF=null,SQ='',VM='grid',EID=null,IMG=null,DID=null,AM='login';
+
+function togAuth(){
+  AM=AM==='login'?'reg':'login';const r=AM==='reg';
+  document.getElementById('ah').textContent=r?'Create account':'Sign in';
+  document.getElementById('as').textContent=r?'Start your collection':'Access your collection';
+  document.getElementById('abl').textContent=r?'Register':'Sign in';
+  document.getElementById('att').textContent=r?'Have an account? ':'No account? ';
+  document.getElementById('atl').textContent=r?'Sign in':'Register';
+  document.getElementById('ng').style.display=r?'':'none';
+  document.getElementById('ae').style.display='none';
 }
 
-// ── State ────────────────────────────────────────────────────────────────────
-let currentUser = null;
-let currentView = 'collection';
-let currentFilter = null;
-let searchTerm = '';
-let viewMode = 'grid';
-let editingRecordId = null;
-let pendingImgData = null;
-let currentDetailId = null;
-let authMode = 'login';
-
-// ── Auth ─────────────────────────────────────────────────────────────────────
-function toggleAuthMode() {
-  authMode = authMode === 'login' ? 'register' : 'login';
-  const r = authMode === 'register';
-  document.getElementById('auth-heading').textContent = r ? 'Create account' : 'Sign in';
-  document.getElementById('auth-sub').textContent = r ? 'Join and build your collection' : 'Access your music collection';
-  document.getElementById('auth-btn-label').textContent = r ? 'Register' : 'Sign in';
-  document.getElementById('auth-toggle-text').textContent = r ? 'Already have an account? ' : 'No account? ';
-  document.getElementById('auth-toggle-link').textContent = r ? 'Sign in' : 'Register';
-  document.getElementById('name-group').style.display = r ? '' : 'none';
-  document.getElementById('auth-error').style.display = 'none';
-}
-
-function submitAuth() {
-  const username = document.getElementById('auth-username').value.trim();
-  const password = document.getElementById('auth-password').value;
-  const errEl = document.getElementById('auth-error');
-  errEl.style.display = 'none';
-  if (!username || !password) { errEl.textContent = 'Please fill in all fields.'; errEl.style.display = ''; return; }
-  const users = getUsers();
-  if (authMode === 'login') {
-    const user = users.find(u => u.username === username && u.password === password);
-    if (!user) { errEl.textContent = 'Invalid username or password.'; errEl.style.display = ''; return; }
-    setSession(user); currentUser = user; enterApp();
+function doAuth(){
+  const u=document.getElementById('au').value.trim(),p=document.getElementById('ap').value;
+  const e=document.getElementById('ae');e.style.display='none';
+  if(!u||!p){e.textContent='Please fill all fields.';e.style.display='';return}
+  const users=gU();
+  if(AM==='login'){
+    const usr=users.find(x=>x.username===u&&x.password===p);
+    if(!usr){e.textContent='Incorrect username or password.';e.style.display='';return}
+    sS(usr);CU=usr;enterApp();
   } else {
-    const name = document.getElementById('reg-name').value.trim();
-    if (!name) { errEl.textContent = 'Please enter your name.'; errEl.style.display = ''; return; }
-    if (users.find(u => u.username === username)) { errEl.textContent = 'Username already taken.'; errEl.style.display = ''; return; }
-    if (password.length < 4) { errEl.textContent = 'Password must be at least 4 characters.'; errEl.style.display = ''; return; }
-    const newUser = { id: 'u' + Date.now(), username, password, name, role: 'user', createdAt: Date.now() };
-    users.push(newUser); setUsers(users); setSession(newUser); currentUser = newUser; enterApp();
+    const n=document.getElementById('rn').value.trim();
+    if(!n){e.textContent='Please enter your name.';e.style.display='';return}
+    if(users.find(x=>x.username===u)){e.textContent='Username taken.';e.style.display='';return}
+    if(p.length<4){e.textContent='Password must be at least 4 characters.';e.style.display='';return}
+    const nu={id:'u'+Date.now(),username:u,password:p,name:n,role:'user',createdAt:Date.now()};
+    users.push(nu);sU(users);sS(nu);CU=nu;enterApp();
   }
 }
 
-function enterApp() {
-  document.getElementById('auth-screen').style.display = 'none';
-  const appEl = document.getElementById('app-screen');
-  appEl.style.display = 'flex';
-  document.getElementById('nav-username').textContent = currentUser.name;
-  document.getElementById('admin-section').style.display = currentUser.role === 'admin' ? '' : 'none';
-  updateSidebarCounts();
-  showView('collection');
+function enterApp(){
+  document.getElementById('auth').style.display='none';
+  document.getElementById('app').style.display='flex';
+  document.getElementById('tu').textContent=CU.name;
+  document.getElementById('admin-rail').style.display=CU.role==='admin'?'':'none';
+  updCts();goView('col');
 }
 
-function signOut() {
-  clearSession(); currentUser = null;
-  document.getElementById('app-screen').style.display = 'none';
-  document.getElementById('auth-screen').style.display = 'flex';
-  document.getElementById('auth-username').value = '';
-  document.getElementById('auth-password').value = '';
+function doOut(){
+  cS();CU=null;
+  document.getElementById('app').style.display='none';
+  document.getElementById('auth').style.display='flex';
+  document.getElementById('au').value='';document.getElementById('ap').value='';
 }
 
-// Handle Enter key on auth form
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && document.getElementById('auth-screen').style.display !== 'none') submitAuth();
-  if (e.key === 'Escape') closeModal();
+function goView(v){
+  CV=v;if(v==='col'){CF=null;SQ='';}
+  document.querySelectorAll('.rail-item').forEach(x=>x.classList.remove('on'));
+  ({col:'rn-col',users:'rn-users',ie:'rn-ie'}[v])&&document.getElementById({col:'rn-col',users:'rn-users',ie:'rn-ie'}[v])?.classList.add('on');
+  render();
+}
+
+function goFmt(f){
+  CV='col';CF=f;SQ='';
+  document.querySelectorAll('.rail-item').forEach(x=>x.classList.remove('on'));
+  ({'12-inch':'rn-12','7-inch':'rn-7','CD':'rn-cd','Cassette':'rn-ca'}[f])&&document.getElementById({'12-inch':'rn-12','7-inch':'rn-7','CD':'rn-cd','Cassette':'rn-ca'}[f])?.classList.add('on');
+  render();
+}
+
+function updCts(){
+  const r=gR();
+  document.getElementById('rc-all').textContent=r.length||'';
+  document.getElementById('rc-12').textContent=r.filter(x=>x.format==='12-inch').length||'';
+  document.getElementById('rc-7').textContent=r.filter(x=>x.format==='7-inch').length||'';
+  document.getElementById('rc-cd').textContent=r.filter(x=>x.format==='CD').length||'';
+  document.getElementById('rc-ca').textContent=r.filter(x=>x.format==='Cassette').length||'';
+}
+
+const fmtCls=f=>({'12-inch':'fmt fmt-12','7-inch':'fmt fmt-7','CD':'fmt fmt-cd','Cassette':'fmt fmt-ca'}[f]||'fmt');
+const fmtLbl=f=>({'12-inch':'12"','7-inch':'7"','CD':'CD','Cassette':'Tape'}[f]||f);
+const esc=s=>(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+function render(){
+  const pg=document.getElementById('pg');
+  if(CV==='col')pg.innerHTML=renderCol();
+  else if(CV==='users')pg.innerHTML=renderUsers();
+  else if(CV==='ie')pg.innerHTML=renderIE();
+  else if(CV==='detail')pg.innerHTML=renderDetail(DID);
+}
+
+function renderCol(){
+  let recs=gR();
+  if(CF)recs=recs.filter(r=>r.format===CF);
+  if(SQ){const q=SQ.toLowerCase();recs=recs.filter(r=>r.artist.toLowerCase().includes(q)||r.title.toLowerCase().includes(q)||(r.label||'').toLowerCase().includes(q)||(r.year||'').toString().includes(q));}
+  const all=gR();
+  const vt=CF?({'12-inch':'12" Vinyl','7-inch':'7" Vinyl','CD':'CD','Cassette':'Cassette'}[CF]):'All records';
+  let stats='';
+  if(!CF&&!SQ){
+    const bf=f=>all.filter(r=>r.format===f).length;
+    stats=`<div class="stats">
+      <div class="stat"><div class="stat-n">${all.length}</div><div class="stat-l">Total</div></div>
+      <div class="stat"><div class="stat-n">${bf('12-inch')}</div><div class="stat-l">12" Vinyl</div></div>
+      <div class="stat"><div class="stat-n">${bf('7-inch')}</div><div class="stat-l">7" Vinyl</div></div>
+      <div class="stat"><div class="stat-n">${bf('CD')}</div><div class="stat-l">CD</div></div>
+      <div class="stat"><div class="stat-n">${bf('Cassette')}</div><div class="stat-l">Cassette</div></div>
+    </div>`;
+  }
+  let body='';
+  if(!recs.length){
+    body=`<div class="empty"><i class="ti ti-vinyl"></i><div class="empty-title">${SQ?'No results found':'Nothing here yet'}</div><p class="empty-sub">${SQ?`No records matching "${esc(SQ)}"` :'Add your first record to start your collection.'}</p>${!SQ?`<button class="btn btn-ink" onclick="openAdd()"><i class="ti ti-plus"></i> Add record</button>`:''}</div>`;
+  } else if(VM==='grid'){
+    body=`<div class="rec-grid">${recs.map(recCard).join('')}</div>`;
+  } else {
+    body=`<div class="rec-list"><div class="rec-row-head"><span></span><span>Title</span><span>Artist</span><span>Label</span><span>Format</span><span>Year</span><span></span></div>${recs.map(recRow).join('')}</div>`;
+  }
+  return `<div class="page-hero"><div class="page-hero-row"><h1 class="page-hero-title">${vt}</h1><div class="vtoggle"><button class="${VM==='grid'?'on':''}" onclick="setVM('grid')" aria-label="Grid"><i class="ti ti-layout-grid"></i></button><button class="${VM==='list'?'on':''}" onclick="setVM('list')" aria-label="List"><i class="ti ti-list"></i></button></div><button class="btn btn-ink" onclick="openAdd()"><i class="ti ti-plus"></i> Add record</button></div>${stats}</div><div class="toolbar"><div class="search-box"><i class="ti ti-search"></i><input type="text" placeholder="Search artist, title, label…" value="${esc(SQ)}" oninput="doSearch(this.value)" /></div><select onchange="doFilter(this.value)" style="width:auto"><option value="">All formats</option><option value="12-inch" ${CF==='12-inch'?'selected':''}>12" Vinyl</option><option value="7-inch" ${CF==='7-inch'?'selected':''}>7" Vinyl</option><option value="CD" ${CF==='CD'?'selected':''}>CD</option><option value="Cassette" ${CF==='Cassette'?'selected':''}>Cassette</option></select></div><div class="content-area">${body}</div>`;
+}
+
+function recCard(r){
+  const img=r.image?`<img src="${r.image}" alt="Cover" loading="lazy"/>`:`<div class="rec-art-ph"><i class="ti ti-vinyl"></i><span>${fmtLbl(r.format)}</span></div>`;
+  return `<div class="rec-card" onclick="openDetail('${r.id}')"><div class="rec-art">${img}</div><div class="rec-body"><div class="rec-title">${esc(r.title)}</div><div class="rec-artist">${esc(r.artist)}</div><div class="rec-foot"><span class="${fmtCls(r.format)}">${fmtLbl(r.format)}</span>${r.year?`<span class="rec-year">${r.year}</span>`:''}</div></div></div>`;
+}
+
+function recRow(r){
+  const th=r.image?`<div class="rec-thumb"><img src="${r.image}" alt=""/></div>`:`<div class="rec-thumb"><i class="ti ti-vinyl" style="font-size:20px;color:var(--ink-20)"></i></div>`;
+  return `<div class="rec-row" onclick="openDetail('${r.id}')">${th}<div class="rec-row-title">${esc(r.title)}</div><div class="rec-row-sub">${esc(r.artist)}</div><div class="rec-row-sub">${esc(r.label||'—')}</div><span class="${fmtCls(r.format)}">${fmtLbl(r.format)}</span><div class="rec-row-year">${r.year||'—'}</div><div class="row-actions"><button class="btn btn-sm btn-ghost" onclick="event.stopPropagation();openEdit('${r.id}')" aria-label="Edit"><i class="ti ti-edit"></i></button><button class="btn btn-sm btn-danger" onclick="event.stopPropagation();delRec('${r.id}')" aria-label="Delete"><i class="ti ti-trash"></i></button></div></div>`;
+}
+
+function openDetail(id){DID=id;CV='detail';document.querySelectorAll('.rail-item').forEach(x=>x.classList.remove('on'));render();}
+
+function renderDetail(id){
+  const r=gR().find(r=>r.id===id);
+  if(!r)return'<p style="padding:2rem">Not found.</p>';
+  const img=r.image?`<img src="${r.image}" alt="Cover"/>`:`<i class="ti ti-vinyl" style="font-size:52px;color:var(--ink-20)"></i>`;
+  return `<div class="detail-wrap"><div class="detail-back" onclick="goView('col')"><i class="ti ti-arrow-left"></i> Back to collection</div><div class="detail-hero"><div class="detail-cover">${img}</div><div class="detail-info"><div><span class="${fmtCls(r.format)}">${fmtLbl(r.format)}</span></div><h1 class="detail-title">${esc(r.title)}</h1><div class="detail-artist">${esc(r.artist)}</div><div class="detail-meta">${r.label?`<div class="detail-meta-r"><span class="detail-meta-k">Label</span><span>${esc(r.label)}</span></div>`:''}${r.year?`<div class="detail-meta-r"><span class="detail-meta-k">Year</span><span>${r.year}</span></div>`:''}</div></div></div>${r.notes?`<div class="detail-notes">${esc(r.notes)}</div>`:''}<div class="detail-actions"><button class="btn btn-ink" onclick="openEdit('${r.id}')"><i class="ti ti-edit"></i> Edit</button><button class="btn btn-danger" onclick="delRec('${r.id}')"><i class="ti ti-trash"></i> Delete</button></div></div>`;
+}
+
+function renderUsers(){
+  if(CU.role!=='admin')return'<p style="padding:2rem">Access denied.</p>';
+  const users=gU();
+  const rows=users.map(u=>`<tr><td>${esc(u.name)}</td><td>${esc(u.username)}</td><td><span class="role-pill ${u.role==='admin'?'role-admin':'role-user'}">${u.role}</span></td><td>${new Date(u.createdAt).toLocaleDateString()}</td><td>${u.id!==CU.id?`<button class="btn btn-sm" onclick="togRole('${u.id}')" style="margin-right:6px">${u.role==='admin'?'Make user':'Make admin'}</button><button class="btn btn-sm btn-danger" onclick="delUser('${u.id}')"><i class="ti ti-trash"></i></button>`:'<span style="font-size:12px;color:var(--ink-60)">You</span>'}</td></tr>`).join('');
+  return `<div class="user-wrap"><div style="display:flex;align-items:center;gap:12px;margin-bottom:1.5rem"><h1 style="font-family:var(--serif);font-size:28px;flex:1">User management</h1><button class="btn btn-ink" onclick="addUser()"><i class="ti ti-user-plus"></i> Add user</button></div><div class="users-table-wrap"><table><thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Joined</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+}
+
+function renderIE(){
+  return `<div class="ie-wrap"><h1 style="font-family:var(--serif);font-size:28px;margin-bottom:1.5rem">Import / Export</h1><div class="ie-grid"><div class="ie-card"><h3>Export</h3><p>Download your full collection as JSON — includes cover images. Use for backups and moving between devices.</p><button class="btn btn-ink" onclick="expJSON()"><i class="ti ti-download"></i> Export JSON</button><div class="divider"></div><p>Export as CSV for use in Excel or Google Sheets. Cover images are not included.</p><button class="btn" onclick="expCSV()"><i class="ti ti-table-export"></i> Export CSV</button></div><div class="ie-card"><h3>Import</h3><p>Import from a previously exported JSON file. Duplicates (by ID) are skipped automatically.</p><button class="btn btn-ink" onclick="document.getElementById('ijf').click()"><i class="ti ti-upload"></i> Import JSON</button><input type="file" id="ijf" accept=".json" style="display:none" onchange="impJSON(event)"/><div class="divider"></div><p>Import from CSV with columns: artist, title, label, format, year, notes.</p><button class="btn" onclick="document.getElementById('icf').click()"><i class="ti ti-table-import"></i> Import CSV</button><input type="file" id="icf" accept=".csv" style="display:none" onchange="impCSV(event)"/></div></div><div class="info-box"><strong>CSV format</strong> — header row required: <code>artist</code> <code>title</code> <code>label</code> <code>format</code> <code>year</code> <code>notes</code>. Valid formats: <code>12-inch</code> <code>7-inch</code> <code>CD</code> <code>Cassette</code>.</div></div>`;
+}
+
+function doSearch(v){SQ=v;render();}
+function doFilter(v){CF=v||null;render();}
+function setVM(m){VM=m;render();}
+
+function openAdd(){
+  EID=null;IMG=null;
+  document.getElementById('mt').textContent='Add record';
+  document.getElementById('msb').textContent='Save record';
+  ['fa','ft','fl','fn'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('fy').value='';document.getElementById('ff').value='12-inch';
+  resetImg();document.getElementById('me').style.display='none';
+  document.getElementById('mo').style.display='flex';
+  setTimeout(()=>document.getElementById('fa').focus(),80);
+}
+
+function openEdit(id){
+  const r=gR().find(r=>r.id===id);if(!r)return;
+  EID=id;IMG=r.image||null;
+  document.getElementById('mt').textContent='Edit record';
+  document.getElementById('msb').textContent='Update record';
+  document.getElementById('fa').value=r.artist;document.getElementById('ft').value=r.title;
+  document.getElementById('fl').value=r.label||'';document.getElementById('fy').value=r.year||'';
+  document.getElementById('ff').value=r.format;document.getElementById('fn').value=r.notes||'';
+  if(r.image){document.getElementById('imgz').innerHTML=`<div class="img-prev"><img src="${r.image}"/><button onclick="clrImg()">×</button></div>`;}
+  else resetImg();
+  document.getElementById('me').style.display='none';
+  document.getElementById('mo').style.display='flex';
+}
+
+function saveRec(){
+  const a=document.getElementById('fa').value.trim(),t=document.getElementById('ft').value.trim();
+  const e=document.getElementById('me');
+  if(!a||!t){e.textContent='Artist and Title are required.';e.style.display='';return;}
+  e.style.display='none';
+  const rec={id:EID||('r'+Date.now()),artist:a,title:t,label:document.getElementById('fl').value.trim(),year:document.getElementById('fy').value?parseInt(document.getElementById('fy').value):null,format:document.getElementById('ff').value,notes:document.getElementById('fn').value.trim(),image:IMG||null,updatedAt:Date.now()};
+  let recs=gR();
+  if(EID){const i=recs.findIndex(r=>r.id===EID);if(i!==-1){rec.addedAt=recs[i].addedAt;recs[i]=rec;}}
+  else{rec.addedAt=Date.now();recs.push(rec);}
+  sR(recs);updCts();closeM();render();toast(EID?'Record updated.':'Record added.');
+}
+
+function delRec(id){
+  if(!confirm('Delete this record?'))return;
+  sR(gR().filter(r=>r.id!==id));updCts();
+  if(CV==='detail')goView('col');else render();
+  toast('Record deleted.');
+}
+
+function onImg(e){
+  const f=e.target.files[0];if(!f)return;
+  const rd=new FileReader();
+  rd.onload=ev=>{IMG=ev.target.result;document.getElementById('imgz').innerHTML=`<div class="img-prev"><img src="${IMG}"/><button onclick="clrImg()">×</button></div>`;};
+  rd.readAsDataURL(f);
+}
+function clrImg(){IMG=null;resetImg();}
+function resetImg(){document.getElementById('imgz').innerHTML='<i class="ti ti-photo-up"></i>Click to upload cover image';document.getElementById('imgf').value='';}
+function bgClose(e){if(e.target===document.getElementById('mo'))closeM();}
+function closeM(){document.getElementById('mo').style.display='none';EID=null;}
+
+function togRole(id){const u=gU(),x=u.find(u=>u.id===id);if(!x)return;x.role=x.role==='admin'?'user':'admin';sU(u);render();toast('Role updated.');}
+function delUser(id){if(!confirm('Delete user?'))return;sU(gU().filter(u=>u.id!==id));render();toast('User deleted.');}
+function addUser(){
+  const n=prompt('Name:');if(!n)return;
+  const u=prompt('Username:');if(!u)return;
+  const p=prompt('Password (min 4):');if(!p||p.length<4){alert('Too short.');return;}
+  const users=gU();if(users.find(x=>x.username===u)){alert('Username taken.');return;}
+  users.push({id:'u'+Date.now(),username:u,password:p,name:n,role:'user',createdAt:Date.now()});
+  sU(users);render();toast('User added.');
+}
+
+function expJSON(){const r=gR();dl(new Blob([JSON.stringify(r,null,2)],{type:'application/json'}),'crate-collection.json');toast(`Exported ${r.length} records.`);}
+function expCSV(){
+  const r=gR(),h=['artist','title','label','format','year','notes'];
+  const rows=r.map(x=>h.map(k=>`"${(x[k]??'').toString().replace(/"/g,'""')}"`).join(','));
+  dl(new Blob([[h.join(','),...rows].join('\n')],{type:'text/csv'}),'crate-collection.csv');
+  toast(`Exported ${r.length} records.`);
+}
+function impJSON(e){
+  const f=e.target.files[0];if(!f)return;
+  const rd=new FileReader();
+  rd.onload=ev=>{try{const imp=JSON.parse(ev.target.result);if(!Array.isArray(imp))throw 0;const ex=gR(),ids=new Set(ex.map(r=>r.id)),nw=imp.filter(r=>r.id&&!ids.has(r.id));sR([...ex,...nw]);updCts();render();toast(`Imported ${nw.length} new records.`);}catch{alert('Invalid JSON.');}};
+  rd.readAsText(f);e.target.value='';
+}
+function impCSV(e){
+  const f=e.target.files[0];if(!f)return;
+  const rd=new FileReader();
+  rd.onload=ev=>{try{const ls=ev.target.result.split('\n').filter(l=>l.trim());const hs=ls[0].split(',').map(h=>h.replace(/"/g,'').trim().toLowerCase());const recs=[];for(let i=1;i<ls.length;i++){const vs=ls[i].split(',').map(v=>v.replace(/^"|"$/g,'').replace(/""/g,'"').trim());const row={};hs.forEach((h,j)=>{row[h]=vs[j]||'';});if(!row.artist&&!row.title)continue;recs.push({id:'r'+Date.now()+i,artist:row.artist||'',title:row.title||'',label:row.label||'',format:row.format||'12-inch',year:row.year?parseInt(row.year):null,notes:row.notes||'',addedAt:Date.now()});}const ex=gR();sR([...ex,...recs]);updCts();render();toast(`Imported ${recs.length} records.`);}catch{alert('CSV parse error.');}};
+  rd.readAsText(f);e.target.value='';
+}
+function dl(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href);}
+
+let TT;
+function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('on');clearTimeout(TT);TT=setTimeout(()=>el.classList.remove('on'),2800);}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')closeM();
+  if(e.key==='Enter'&&document.getElementById('auth').style.display!=='none')doAuth();
 });
 
-// ── Navigation ───────────────────────────────────────────────────────────────
-function showView(view) {
-  currentView = view;
-  if (view === 'collection') { currentFilter = null; searchTerm = ''; }
-  document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-  const navMap = { collection: 'nav-collection', users: 'nav-users', 'import-export': 'nav-ie' };
-  if (navMap[view]) document.getElementById(navMap[view])?.classList.add('active');
-  renderContent();
-}
-
-function filterFormat(fmt) {
-  currentView = 'collection'; currentFilter = fmt; searchTerm = '';
-  document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-  const m = { '12-inch': 'nav-12inch', '7-inch': 'nav-7inch', 'CD': 'nav-cd', 'Cassette': 'nav-cass' };
-  if (m[fmt]) document.getElementById(m[fmt])?.classList.add('active');
-  renderContent();
-}
-
-function updateSidebarCounts() {
-  const r = getRecords();
-  document.getElementById('nav-count-all').textContent = r.length || '';
-  ['12-inch','7-inch','CD','Cassette'].forEach(f => {
-    const el = document.getElementById('nav-count-' + f.replace('-inch','').toLowerCase().replace('cassette','cass'));
-    if (el) el.textContent = r.filter(x => x.format === f).length || '';
-  });
-}
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-const fmtLabel = f => ({ '12-inch': '12"', '7-inch': '7"', 'CD': 'CD', 'Cassette': 'Tape' }[f] || f);
-const esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-
-// ── Renderer ──────────────────────────────────────────────────────────────────
-function renderContent() {
-  const mc = document.getElementById('main-content');
-  if (currentView === 'collection') mc.innerHTML = renderCollection();
-  else if (currentView === 'users') mc.innerHTML = renderUsers();
-  else if (currentView === 'import-export') mc.innerHTML = renderImportExport();
-  else if (currentView === 'detail') mc.innerHTML = renderDetail(currentDetailId);
-}
-
-function renderCollection() {
-  let records = getRecords();
-  if (currentFilter) records = records.filter(r => r.format === currentFilter);
-  if (searchTerm) {
-    const q = searchTerm.toLowerCase();
-    records = records.filter(r =>
-      r.artist.toLowerCase().includes(q) || r.title.toLowerCase().includes(q) ||
-      (r.label||'').toLowerCase().includes(q) || (r.year||'').toString().includes(q)
-    );
-  }
-  const allRecords = getRecords();
-  const viewTitle = currentFilter
-    ? ({ '12-inch': '12" Vinyl', '7-inch': '7" Vinyl', 'CD': 'CD', 'Cassette': 'Cassette' }[currentFilter])
-    : 'All records';
-
-  let statsHtml = '';
-  if (!currentFilter && !searchTerm) {
-    const byFmt = f => allRecords.filter(r => r.format === f).length;
-    statsHtml = `<div class="stats-grid">
-      <div class="stat-card"><div class="stat-label">Total records</div><div class="stat-val">${allRecords.length}</div></div>
-      <div class="stat-card"><div class="stat-label">12" Vinyl</div><div class="stat-val">${byFmt('12-inch')}</div></div>
-      <div class="stat-card"><div class="stat-label">7" Vinyl</div><div class="stat-val">${byFmt('7-inch')}</div></div>
-      <div class="stat-card"><div class="stat-label">CD</div><div class="stat-val">${byFmt('CD')}</div></div>
-      <div class="stat-card"><div class="stat-label">Cassette</div><div class="stat-val">${byFmt('Cassette')}</div></div>
-    </div>`;
-  }
-
-  let listHtml = '';
-  if (records.length === 0) {
-    listHtml = `<div class="empty-state">
-      <i class="ti ti-vinyl" aria-hidden="true"></i>
-      <p>No records yet${searchTerm ? ' matching "'+esc(searchTerm)+'"' : ''}.</p>
-      ${!searchTerm ? '<button class="btn btn-primary" onclick="openAddModal()"><i class="ti ti-plus"></i> Add your first record</button>' : ''}
-    </div>`;
-  } else if (viewMode === 'grid') {
-    listHtml = `<div class="records-grid">${records.map(recordCardHtml).join('')}</div>`;
-  } else {
-    listHtml = `<div class="records-list">
-      <div class="record-row header-row">
-        <div></div>
-        <div class="row-header">Title</div>
-        <div class="row-header">Artist</div>
-        <div class="row-header">Label</div>
-        <div class="row-header">Format</div>
-        <div class="row-header">Year</div>
-        <div></div>
-      </div>
-      ${records.map(recordRowHtml).join('')}
-    </div>`;
-  }
-
-  return `
-    <div class="content-header">
-      <h1 class="content-title">${viewTitle}</h1>
-      <div class="view-toggle">
-        <button class="${viewMode==='grid'?'active':''}" onclick="setViewMode('grid')" aria-label="Grid view"><i class="ti ti-layout-grid"></i></button>
-        <button class="${viewMode==='list'?'active':''}" onclick="setViewMode('list')" aria-label="List view"><i class="ti ti-list"></i></button>
-      </div>
-      <button class="btn btn-primary" onclick="openAddModal()"><i class="ti ti-plus" aria-hidden="true"></i> Add record</button>
-    </div>
-    ${statsHtml}
-    <div class="toolbar">
-      <div class="search-wrap">
-        <i class="ti ti-search" aria-hidden="true"></i>
-        <input type="text" id="search-input" placeholder="Search artist, title, label…" value="${esc(searchTerm)}" oninput="onSearch(this.value)" aria-label="Search records" />
-      </div>
-      <select class="filter-select" onchange="onFormatFilter(this.value)" aria-label="Filter by format">
-        <option value="">All formats</option>
-        <option value="12-inch" ${currentFilter==='12-inch'?'selected':''}>12" Vinyl</option>
-        <option value="7-inch" ${currentFilter==='7-inch'?'selected':''}>7" Vinyl</option>
-        <option value="CD" ${currentFilter==='CD'?'selected':''}>CD</option>
-        <option value="Cassette" ${currentFilter==='Cassette'?'selected':''}>Cassette</option>
-      </select>
-    </div>
-    ${listHtml}`;
-}
-
-function recordCardHtml(r) {
-  const img = r.image
-    ? `<img src="${r.image}" alt="Cover for ${esc(r.title)}" loading="lazy" />`
-    : `<div class="record-img-placeholder"><i class="ti ti-vinyl" aria-hidden="true"></i><span>${fmtLabel(r.format)}</span></div>`;
-  return `<div class="record-card" onclick="openDetail('${r.id}')" role="button" tabindex="0" aria-label="${esc(r.title)} by ${esc(r.artist)}">
-    <div class="record-img">${img}</div>
-    <div class="record-info">
-      <div class="record-title">${esc(r.title)}</div>
-      <div class="record-artist">${esc(r.artist)}</div>
-      <div class="record-meta">
-        <span class="format-badge">${fmtLabel(r.format)}</span>
-        ${r.year ? `<span class="record-year">${r.year}</span>` : ''}
-      </div>
-    </div>
-  </div>`;
-}
-
-function recordRowHtml(r) {
-  const thumb = r.image
-    ? `<div class="record-row-thumb"><img src="${r.image}" alt="" /></div>`
-    : `<div class="record-row-thumb"><i class="ti ti-vinyl" style="font-size:18px; color:var(--text-tertiary)" aria-hidden="true"></i></div>`;
-  return `<div class="record-row" onclick="openDetail('${r.id}')">
-    ${thumb}
-    <div style="font-size:14px; font-weight:500">${esc(r.title)}</div>
-    <div style="font-size:14px; color:var(--text-secondary)">${esc(r.artist)}</div>
-    <div style="font-size:13px; color:var(--text-secondary)">${esc(r.label||'—')}</div>
-    <div><span class="format-badge">${fmtLabel(r.format)}</span></div>
-    <div style="font-size:13px; color:var(--text-secondary)">${r.year||'—'}</div>
-    <div style="display:flex; gap:6px; justify-content:flex-end">
-      <button class="btn" onclick="event.stopPropagation(); openEditModal('${r.id}')" style="padding:5px 8px" aria-label="Edit ${esc(r.title)}"><i class="ti ti-edit" aria-hidden="true"></i></button>
-      <button class="btn btn-danger" onclick="event.stopPropagation(); deleteRecord('${r.id}')" style="padding:5px 8px" aria-label="Delete ${esc(r.title)}"><i class="ti ti-trash" aria-hidden="true"></i></button>
-    </div>
-  </div>`;
-}
-
-function openDetail(id) {
-  currentDetailId = id; currentView = 'detail';
-  document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-  renderContent();
-}
-
-function renderDetail(id) {
-  const r = getRecords().find(r => r.id === id);
-  if (!r) return '<p>Record not found.</p>';
-  const img = r.image
-    ? `<img src="${r.image}" alt="Cover for ${esc(r.title)}" />`
-    : `<i class="ti ti-vinyl detail-cover-placeholder" aria-hidden="true"></i>`;
-  return `
-    <button class="btn" onclick="showView('collection')" style="margin-bottom:1.25rem"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
-    <div class="detail-panel">
-      <div class="detail-hero">
-        <div class="detail-cover">${img}</div>
-        <div>
-          <h1 class="detail-title">${esc(r.title)}</h1>
-          <p class="detail-artist">${esc(r.artist)}</p>
-          <div class="detail-meta-list">
-            ${r.label ? `<div class="detail-meta-row"><span class="detail-meta-label">Label</span><span class="detail-meta-val">${esc(r.label)}</span></div>` : ''}
-            <div class="detail-meta-row"><span class="detail-meta-label">Format</span><span class="detail-meta-val"><span class="format-badge">${fmtLabel(r.format)}</span></span></div>
-            ${r.year ? `<div class="detail-meta-row"><span class="detail-meta-label">Year</span><span class="detail-meta-val">${r.year}</span></div>` : ''}
-          </div>
-        </div>
-      </div>
-      ${r.notes ? `<div class="detail-notes">${esc(r.notes)}</div>` : ''}
-      <div style="display:flex; gap:8px; margin-top:1.25rem">
-        <button class="btn btn-primary" onclick="openEditModal('${r.id}')"><i class="ti ti-edit" aria-hidden="true"></i> Edit</button>
-        <button class="btn btn-danger" onclick="deleteRecord('${r.id}')"><i class="ti ti-trash" aria-hidden="true"></i> Delete</button>
-      </div>
-    </div>`;
-}
-
-function renderUsers() {
-  if (currentUser.role !== 'admin') return '<p>Access denied.</p>';
-  const users = getUsers();
-  const rows = users.map(u => `<tr>
-    <td>${esc(u.name)}</td>
-    <td>${esc(u.username)}</td>
-    <td><span class="role-badge ${u.role==='admin'?'role-admin':'role-user'}">${u.role}</span></td>
-    <td>${new Date(u.createdAt).toLocaleDateString()}</td>
-    <td>${u.id !== currentUser.id
-      ? `<button class="btn" onclick="toggleRole('${u.id}')" style="font-size:12px; padding:4px 10px">${u.role==='admin'?'Make user':'Make admin'}</button>
-         <button class="btn btn-danger" onclick="deleteUser('${u.id}')" style="font-size:12px; padding:4px 10px; margin-left:4px"><i class="ti ti-trash" aria-hidden="true"></i></button>`
-      : '<span style="font-size:13px; color:var(--text-tertiary)">You</span>'}</td>
-  </tr>`).join('');
-  return `
-    <div class="content-header">
-      <h1 class="content-title">User management</h1>
-      <button class="btn btn-primary" onclick="openAddUserModal()"><i class="ti ti-user-plus" aria-hidden="true"></i> Add user</button>
-    </div>
-    <div style="background:var(--bg-primary); border:0.5px solid var(--border-tertiary); border-radius:var(--radius-lg); overflow:hidden">
-      <table class="user-table">
-        <thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Joined</th><th>Actions</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>`;
-}
-
-function renderImportExport() {
-  return `
-    <div class="content-header"><h1 class="content-title">Import / Export</h1></div>
-    <div class="io-area">
-      <div class="io-card">
-        <h3><i class="ti ti-download" aria-hidden="true"></i> Export collection</h3>
-        <p>Download your entire collection as a JSON file you can back up or import later.</p>
-        <button class="btn btn-primary" onclick="exportJSON()"><i class="ti ti-download" aria-hidden="true"></i> Export JSON</button>
-        <hr class="divider" />
-        <p>Export as a CSV spreadsheet for use in Excel or Google Sheets (no images).</p>
-        <button class="btn" onclick="exportCSV()"><i class="ti ti-table-export" aria-hidden="true"></i> Export CSV</button>
-      </div>
-      <div class="io-card">
-        <h3><i class="ti ti-upload" aria-hidden="true"></i> Import collection</h3>
-        <p>Import records from a previously exported JSON file. Existing records (by ID) will not be overwritten.</p>
-        <button class="btn btn-primary" onclick="document.getElementById('import-json-input').click()"><i class="ti ti-upload" aria-hidden="true"></i> Import JSON</button>
-        <input type="file" id="import-json-input" accept=".json" style="display:none" onchange="importJSON(event)" />
-        <hr class="divider" />
-        <p>Import from a CSV file with columns: artist, title, label, format, year, notes.</p>
-        <button class="btn" onclick="document.getElementById('import-csv-input').click()"><i class="ti ti-table-import" aria-hidden="true"></i> Import CSV</button>
-        <input type="file" id="import-csv-input" accept=".csv" style="display:none" onchange="importCSV(event)" />
-      </div>
-    </div>
-    <div style="margin-top:1.5rem; padding:1rem; background:var(--bg-secondary); border-radius:var(--radius-md); font-size:13px; color:var(--text-secondary); line-height:1.6">
-      <strong>CSV format:</strong> Header row required with these columns (order doesn't matter):
-      <code>artist</code>, <code>title</code>, <code>label</code>, <code>format</code>, <code>year</code>, <code>notes</code>.
-      Valid formats: <code>12-inch</code>, <code>7-inch</code>, <code>CD</code>, <code>Cassette</code>.
-    </div>`;
-}
-
-// ── Collection actions ────────────────────────────────────────────────────────
-function onSearch(val) { searchTerm = val; renderContent(); }
-function onFormatFilter(val) { currentFilter = val || null; renderContent(); }
-function setViewMode(m) { viewMode = m; renderContent(); }
-
-function openAddModal() {
-  editingRecordId = null; pendingImgData = null;
-  document.getElementById('modal-title').textContent = 'Add record';
-  document.getElementById('modal-save-btn').textContent = 'Save record';
-  ['f-artist','f-title','f-label','f-notes'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('f-year').value = '';
-  document.getElementById('f-format').value = '12-inch';
-  resetImgUpload();
-  document.getElementById('modal-error').style.display = 'none';
-  document.getElementById('modal-record').style.display = 'flex';
-  setTimeout(() => document.getElementById('f-artist').focus(), 100);
-}
-
-function openEditModal(id) {
-  const r = getRecords().find(r => r.id === id);
-  if (!r) return;
-  editingRecordId = id; pendingImgData = r.image || null;
-  document.getElementById('modal-title').textContent = 'Edit record';
-  document.getElementById('modal-save-btn').textContent = 'Update record';
-  document.getElementById('f-artist').value = r.artist;
-  document.getElementById('f-title').value = r.title;
-  document.getElementById('f-label').value = r.label || '';
-  document.getElementById('f-year').value = r.year || '';
-  document.getElementById('f-format').value = r.format;
-  document.getElementById('f-notes').value = r.notes || '';
-  if (r.image) {
-    document.getElementById('img-upload-zone').innerHTML =
-      `<div class="img-preview"><img src="${r.image}" alt="Cover" /><button onclick="clearImg()" aria-label="Remove image">×</button></div>`;
-  } else { resetImgUpload(); }
-  document.getElementById('modal-error').style.display = 'none';
-  document.getElementById('modal-record').style.display = 'flex';
-}
-
-function saveRecord() {
-  const artist = document.getElementById('f-artist').value.trim();
-  const title = document.getElementById('f-title').value.trim();
-  const errEl = document.getElementById('modal-error');
-  if (!artist || !title) { errEl.textContent = 'Artist and Title are required.'; errEl.style.display = ''; return; }
-  errEl.style.display = 'none';
-  const rec = {
-    id: editingRecordId || ('r' + Date.now()),
-    artist, title,
-    label: document.getElementById('f-label').value.trim(),
-    year: document.getElementById('f-year').value ? parseInt(document.getElementById('f-year').value) : null,
-    format: document.getElementById('f-format').value,
-    notes: document.getElementById('f-notes').value.trim(),
-    image: pendingImgData || null,
-    updatedAt: Date.now()
-  };
-  let records = getRecords();
-  if (editingRecordId) {
-    const idx = records.findIndex(r => r.id === editingRecordId);
-    if (idx !== -1) { rec.addedAt = records[idx].addedAt; records[idx] = rec; }
-  } else { rec.addedAt = Date.now(); records.push(rec); }
-  setRecords(records); updateSidebarCounts(); closeModal(); renderContent();
-  showToast(editingRecordId ? 'Record updated.' : 'Record added to collection.');
-}
-
-function deleteRecord(id) {
-  if (!confirm('Delete this record from your collection?')) return;
-  setRecords(getRecords().filter(r => r.id !== id));
-  updateSidebarCounts();
-  if (currentView === 'detail') showView('collection');
-  else renderContent();
-  showToast('Record deleted.');
-}
-
-// ── Image upload ──────────────────────────────────────────────────────────────
-function handleImgUpload(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    pendingImgData = ev.target.result;
-    document.getElementById('img-upload-zone').innerHTML =
-      `<div class="img-preview"><img src="${pendingImgData}" alt="Cover preview" /><button onclick="clearImg()" aria-label="Remove image">×</button></div>`;
-  };
-  reader.readAsDataURL(file);
-}
-function clearImg() { pendingImgData = null; resetImgUpload(); }
-function resetImgUpload() {
-  document.getElementById('img-upload-zone').innerHTML = '<i class="ti ti-photo-up" aria-hidden="true"></i>Click to upload cover image';
-  document.getElementById('img-file-input').value = '';
-}
-
-// ── Modal ─────────────────────────────────────────────────────────────────────
-function closeModalBackdrop(e) { if (e.target === document.getElementById('modal-record')) closeModal(); }
-function closeModal() { document.getElementById('modal-record').style.display = 'none'; editingRecordId = null; }
-
-// ── User management ───────────────────────────────────────────────────────────
-function toggleRole(id) {
-  const users = getUsers();
-  const u = users.find(u => u.id === id);
-  if (!u) return;
-  u.role = u.role === 'admin' ? 'user' : 'admin';
-  setUsers(users); renderContent(); showToast('User role updated.');
-}
-function deleteUser(id) {
-  if (!confirm('Delete this user?')) return;
-  setUsers(getUsers().filter(u => u.id !== id));
-  renderContent(); showToast('User deleted.');
-}
-function openAddUserModal() {
-  const name = prompt('New user name:');
-  if (!name) return;
-  const username = prompt('Username:');
-  if (!username) return;
-  const password = prompt('Password (min 4 chars):');
-  if (!password || password.length < 4) { alert('Password too short.'); return; }
-  const users = getUsers();
-  if (users.find(u => u.username === username)) { alert('Username already taken.'); return; }
-  users.push({ id: 'u'+Date.now(), username, password, name, role: 'user', createdAt: Date.now() });
-  setUsers(users); renderContent(); showToast('User added.');
-}
-
-// ── Import / Export ───────────────────────────────────────────────────────────
-function exportJSON() {
-  const records = getRecords();
-  dlFile(new Blob([JSON.stringify(records, null, 2)], { type: 'application/json' }), 'crate-collection.json');
-  showToast(`Exported ${records.length} records as JSON.`);
-}
-function exportCSV() {
-  const records = getRecords();
-  const headers = ['artist','title','label','format','year','notes'];
-  const rows = records.map(r => headers.map(h => `"${(r[h]??'').toString().replace(/"/g,'""')}"`).join(','));
-  dlFile(new Blob([[headers.join(','), ...rows].join('\n')], { type: 'text/csv' }), 'crate-collection.csv');
-  showToast(`Exported ${records.length} records as CSV.`);
-}
-function importJSON(e) {
-  const file = e.target.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    try {
-      const imported = JSON.parse(ev.target.result);
-      if (!Array.isArray(imported)) throw new Error();
-      const existing = getRecords();
-      const existingIds = new Set(existing.map(r => r.id));
-      const newRecs = imported.filter(r => r.id && !existingIds.has(r.id));
-      setRecords([...existing, ...newRecs]); updateSidebarCounts(); renderContent();
-      showToast(`Imported ${newRecs.length} new records.`);
-    } catch { alert('Invalid JSON file.'); }
-  };
-  reader.readAsText(file); e.target.value = '';
-}
-function importCSV(e) {
-  const file = e.target.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    try {
-      const lines = ev.target.result.split('\n').filter(l => l.trim());
-      const headers = lines[0].split(',').map(h => h.replace(/"/g,'').trim().toLowerCase());
-      const records = [];
-      for (let i = 1; i < lines.length; i++) {
-        const vals = lines[i].split(',').map(v => v.replace(/^"|"$/g,'').replace(/""/g,'"').trim());
-        const row = {};
-        headers.forEach((h, idx) => { row[h] = vals[idx] || ''; });
-        if (!row.artist && !row.title) continue;
-        records.push({ id: 'r'+Date.now()+i, artist: row.artist||'', title: row.title||'',
-          label: row.label||'', format: row.format||'12-inch',
-          year: row.year ? parseInt(row.year) : null, notes: row.notes||'', addedAt: Date.now() });
-      }
-      const existing = getRecords();
-      setRecords([...existing, ...records]); updateSidebarCounts(); renderContent();
-      showToast(`Imported ${records.length} records from CSV.`);
-    } catch { alert('Could not parse CSV.'); }
-  };
-  reader.readAsText(file); e.target.value = '';
-}
-function dlFile(blob, name) {
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob); a.download = name; a.click();
-  URL.revokeObjectURL(a.href);
-}
-
-// ── Toast ─────────────────────────────────────────────────────────────────────
-let toastTimer;
-function showToast(msg) {
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
-}
-
-// ── Init ──────────────────────────────────────────────────────────────────────
-seedAdmin();
-const session = getSession();
-if (session) { currentUser = session; enterApp(); }
+seed();
+const s=gS();if(s){CU=s;enterApp();}
 </script>
 </body>
 </html>
